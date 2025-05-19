@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Corumba Clean</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 
   <link href="css/style.css" rel="stylesheet">
 
@@ -27,179 +30,46 @@
             <a class="nav-link active" aria-current="page" href="index.html">Página inicial</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#produtos">Produtos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#catalogo">Catálogo de Produtos</a>
+            <a class="nav-link" href="catalogo.html">Catálogo de Produtos</a>
           </li>
 
 
 
         </ul>
-        <div class="d-flex">
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Botão Contato (mantido) -->
           <a href="contato.html" class="btn btn-warning">
             Entre em contato
           </a>
+
+          <!-- Novo Botão Carrinho -->
+          <a href="carrinho.html" class="btn btn-light position-relative">
+            <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
+            <span id="cart-count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              0
+            </span>
+          </a>
+
+          </a>
         </div>
+
       </div>
     </div>
   </nav>
 
 
 
-  <div class="image">
-    <img src="images/Design sem nome.png">
+  <div class="image-container">
+    <img src="images/Design sem nome.png" class="img-fluid">
+    <a href="catalogo.html" class="botao-sobre-imagem">Catálogo de Produtos</a>
+  </div>
   </div>
 
-  <section id="produtos" class="bolhas-background">
-    <div class="bolha"></div>
-    <div class="bolha"></div>
-    <div class="bolha"></div>
-    <div class="bolha"></div>
-    <div class="bolha"></div>
-
-    <div class="conteudo">
-      <h2>Um pouco sobre nossos produtos</h2>
-      <p> Na Corumba Clean, oferecemos uma linha completa de produtos de limpeza desenvolvidos para cuidar da sua casa e
-        do seu negócio com eficiência e qualidade. Nossos produtos foram cuidadosamente selecionados para garantir
-        máxima limpeza, praticidade e um ambiente sempre perfumado.
-        Trabalhamos com soluções ideais para diferentes necessidades: desde desinfetantes e detergentes até limpadores
-        multiuso e aromatizantes — tudo para tornar sua rotina mais leve e higiênica. Atendemos tanto residências quanto
-        estabelecimentos comerciais, sempre com foco na segurança, na eficácia e no bem-estar de todos.
-        Com a Corumba Clean, a limpeza vai além do visual: é proteção, frescor e cuidado em cada detalhe. Conte com a
-        gente para manter seus espaços sempre limpos, acolhedores e cheios de vida.</p>
-    </div>
-  </section>
-
-  <section id="catalogo" class="catalogo">
-  <div class="catalogo-header">
-    <h2>Catálogo Completo</h2>
-  </div>
-
-  <div class="container text-center">
-    <div class="botoes-catalogo">
-      <button class="btn-produto btn btn-danger" onclick="toggleProduto('limpador')">Limpador Perfumado</button>
-      <button class="btn-produto btn btn-info" onclick="toggleProduto('detergente')">Detergente Lava Louças</button>
-      <button class="btn-produto btn btn-danger btn-sm" onclick="toggleProduto('alcool')">Álcool Perfumado</button>
-      <button class="btn-produto btn btn-warning" onclick="toggleProduto('aromatizador')">Aromatizador</button>
-    </div>
-
-    <div id="limpador" class="produto-info">
-  <p>✔ Ideal para pisos e superfícies lisas.<br>✔ Fragrância suave e duradoura.</p>
-
-  <div class="produto-item">
-    <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 10.51.06.jpeg" alt="Limpador Perfumado">
-    <p class="legenda">Limpador Perfumado 1</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 11.04.08.jpeg" alt="Limpador Perfumado">
-    <p class="legenda">Limpador Perfumado 2</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.40.46.jpeg" alt="Limpador Perfumado">
-    <p class="legenda">Limpador Perfumado 3</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.41.53.jpeg" alt="Limpador Perfumado">
-    <p class="legenda">Limpador Perfumado 4</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.42.22.jpeg" alt="Limpador Perfumado">
-    <p class="legenda">Limpador Perfumado 5</p>
-  </div>
-</div>
-
-<div id="detergente" class="produto-info">
-  <p>✔ Poder desengordurante.<br>✔ Suave para as mãos.</p>
-
-  <div class="produto-item">
-    <img src="images/Detergente Lava louças 5L/WhatsApp Image 2025-03-04 at 10.42.29.jpeg" alt="Detergente Lava Louças">
-    <p class="legenda">Detergente 5L 1</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Detergente Lava louças 5L/WhatsApp Image 2025-03-04 at 11.54.49.jpeg" alt="Detergente Lava Louças">
-    <p class="legenda">Detergente 5L 2</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Detergente Lava louças 2L/WhatsApp Image 2025-03-04 at 11.50.43.jpeg" alt="Detergente Lava Louças">
-    <p class="legenda">Detergente 2L 1</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Detergente Lava louças 2L/WhatsApp Image 2025-03-04 at 11.53.45.jpeg" alt="Detergente Lava Louças">
-    <p class="legenda">Detergente 2L 2</p>
-  </div>
-</div>
-
-<div id="alcool" class="produto-info">
-  <p>✔ Ação desinfetante.<br>✔ Aroma agradável.</p>
-
-  <div class="produto-item">
-    <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.37.34.jpeg" alt="Álcool Perfumado">
-    <p class="legenda">Álcool Perfumado 1</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.38.22.jpeg" alt="Álcool Perfumado">
-    <p class="legenda">Álcool Perfumado 2</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.44.55.jpeg" alt="Álcool Perfumado">
-    <p class="legenda">Álcool Perfumado 3</p>
-  </div>
-</div>
-
-<div id="aromatizador" class="produto-info">
-  <p>✔ Deixa o ambiente mais agradável.<br>✔ Diversas fragrâncias disponíveis.</p>
-
-  <div class="produto-item">
-    <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.40.02.jpeg" alt="Aromatizador">
-    <p class="legenda">Aromatizador 1</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.40.27.jpeg" alt="Aromatizador">
-    <p class="legenda">Aromatizador 2</p>
-  </div>
-  <div class="produto-item">
-    <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.42.37.jpeg" alt="Aromatizador">
-    <p class="legenda">Aromatizador 3</p>
-  </div>
-</div>
-
-</section>
-
-  <script>
-    function toggleProduto(id) {
-      const all = document.querySelectorAll('.produto-info');
-
-      all.forEach(el => {
-        if (el.id === id) {
-          const isVisible = el.classList.contains('show');
-          all.forEach(e => {
-            e.classList.remove('show', 'ativo');
-            e.style.display = 'none';
-          });
-
-          if (!isVisible) {
-            el.style.display = 'grid';
-            setTimeout(() => {
-              el.classList.add('show');
-              requestAnimationFrame(() => el.classList.add('ativo'));
-            }, 10);
-          }
-        } else {
-          el.classList.remove('show', 'ativo');
-          el.style.display = 'none';
-        }
-      });
-    }
-  </script>
 
 
 
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-    crossorigin="anonymous"></script>
 </body>
 
 
