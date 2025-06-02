@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Corumba Clean</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    .minha-navbar {
+      background-color: #221c92 !important;
+      box-shadow: 0 4px 10px rgb(255, 255, 255);
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: white !important;
+    }
+
+    .nav-link:hover {
+      color: black !important;
+    }
+
+    /* Estilo para o container de login */
+    .login-container {
+      max-width: 450px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-header h2 {
+      color: #221c92;
+      font-weight: 600;
+    }
+
+    /* Estilo para os campos de formulário */
+    .form-floating {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control:focus {
+      border-color: #221c92;
+      box-shadow: 0 0 0 0.25rem rgba(34, 28, 146, 0.25);
+    }
+
+    /* Botão de login personalizado */
+    .btn-login {
+      background-color: #221c92 !important;
+      color: white !important;
+      border: none !important;
+      transition: transform 0.1s ease, background-color 0.3s ease;
+      padding: 0.7rem 1rem;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .btn-login:hover {
+      background-color: #160f65 !important;
+    }
+
+    .btn-login:active {
+      background-color: #3b36c9 !important;
+      transform: scale(0.98);
+    }
+
+    /* Links de recuperação e cadastro */
+    .login-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .login-links a {
+      color: #221c92;
+      text-decoration: none;
+    }
+
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Divisor com texto "ou" */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+      color: #6c757d;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .divider span {
+      padding: 0 1rem;
+    }
+
+    /* Botões de login social */
+    .social-login {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn-social {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #dee2e6;
+      background-color: white;
+      color: #333;
+      transition: background-color 0.2s;
+    }
+
+    .btn-social:hover {
+      background-color: #f8f9fa;
+    }
+
+    /* Mensagens de feedback */
+    .alert {
+      display: none;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsividade para telas menores */
+    @media (max-width: 576px) {
+      .login-container {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+      }
+
+      .login-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .social-login {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg minha-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Corumba Clean</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">Página inicial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="catalogo.html">Catálogo de Produtos</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-3">
+          <a href="login.html" class="btn btn-warning active">Faça o seu login</a>
+
+          <a href="carrinho.html" class="btn btn-light position-relative">
+            <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
+            <span id="cart-count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              0
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="login-container">
+      <div class="login-header">
+        <h2>Acesse sua conta</h2>
+        <p class="text-muted">Entre com suas credenciais para acessar</p>
+      </div>
+
+      <!-- Alertas de feedback -->
+      <div class="alert alert-danger" id="error-alert" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span id="error-message">Email ou senha incorretos. Tente novamente.</span>
+      </div>
+
+      <div class="alert alert-success" id="success-alert" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span>Login realizado com sucesso! Redirecionando...</span>
+      </div>
+
+      <!-- Formulário de login -->
+      <form id="login-form">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="email" placeholder="nome@exemplo.com" required>
+          <label for="email">Email</label>
+          <div class="invalid-feedback">
+            Por favor, informe um email válido.
+          </div>
+        </div>
+
+        <div class="form-floating">
+          <input type="password" class="form-control" id="password" placeholder="Senha" required minlength="6">
+          <label for="password">Senha</label>
+          <div class="invalid-feedback">
+            A senha deve ter pelo menos 6 caracteres.
+          </div>
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="remember-me">
+          <label class="form-check-label" for="remember-me">
+            Lembrar de mim
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-login">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+        </button>
+      </form>
+
+      <div class="login-links">
+        <a href="#" id="forgot-password">Esqueceu sua senha?</a>
+        <a href="#" id="create-account">Criar uma conta</a>
+      </div>
+
+      <div class="divider">
+        <span>ou</span>
+      </div>
+
+      <div class="social-login">
+        <button class="btn-social">
+          <i class="bi bi-google"></i>
+          <span>Google</span>
+        </button>
+        <button class="btn-social">
+          <i class="bi bi-facebook"></i>
+          <span>Facebook</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Recuperação de Senha -->
+  <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="passwordResetModalLabel">Recuperar Senha</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <p>Informe seu email para receber instruções de recuperação de senha.</p>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="reset-email" placeholder="nome@exemplo.com" required>
+            <label for="reset-email">Email</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="send-reset">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Cadastro -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Criar Conta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="signup-form">
+            <div class="mb-3">
+              <label for="signup-name" class="form-label">Nome completo</label>
+              <input type="text" class="form-control" id="signup-name" required>
+            </div>
+            <div class="mb-3">
+              <label for="signup-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="signup-email" required>
+            </div>
+            <div class="mb-3">
+              <label for="signup-password" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="signup-password" required minlength="6">
+              <div class="form-text">A senha deve ter pelo menos 6 caracteres.</div>
+            </div>
+            <div class="mb-3">
+              <label for="signup-confirm-password" class="form-label">Confirmar senha</label>
+              <input type="password" class="form-control" id="signup-confirm-password" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="create-account-btn">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts Bootstrap e JavaScript personalizado -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Referências aos elementos
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const errorAlert = document.getElementById('error-alert');
+      const successAlert = document.getElementById('success-alert');
+      const forgotPasswordLink = document.getElementById('forgot-password');
+      const createAccountLink = document.getElementById('create-account');
+      const sendResetBtn = document.getElementById('send-reset');
+      const createAccountBtn = document.getElementById('create-account-btn');
+
+      // Modais
+      const passwordResetModal = new bootstrap.Modal(document.getElementById('passwordResetModal'));
+      const signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+
+      // Validação e envio do formulário de login
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Validação básica
+        let isValid = true;
+        
+        if (!emailInput.checkValidity()) {
+          emailInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          emailInput.classList.remove('is-invalid');
+        }
+        
+        if (!passwordInput.checkValidity()) {
+          passwordInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          passwordInput.classList.remove('is-invalid');
+        }
+        
+        if (isValid) {
+          // Simulação de autenticação (para demonstração)
+          if (emailInput.value === 'teste@exemplo.com' && passwordInput.value === 'senha123') {
+            // Login bem-sucedido
+            errorAlert.style.display = 'none';
+            successAlert.style.display = 'block';
+            
+            // Redirecionar após 2 segundos (simulação)
+            setTimeout(() => {
+              window.location.href = 'index.php';
+            }, 2000);
+          } else {
+            // Login falhou
+            errorAlert.style.display = 'block';
+            successAlert.style.display = 'none';
+          }
+        }
+      });
+
+      // Abrir modal de recuperação de senha
+      forgotPasswordLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        passwordResetModal.show();
+      });
+
+      // Abrir modal de cadastro
+      createAccountLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        signupModal.show();
+      });
+
+      // Enviar solicitação de recuperação de senha
+      sendResetBtn.addEventListener('click', function() {
+        const resetEmail = document.getElementById('reset-email').value;
+        if (resetEmail) {
+          // Simulação de envio (para demonstração)
+          alert(`Um email de recuperação foi enviado para ${resetEmail}`);
+          passwordResetModal.hide();
+        }
+      });
+
+      // Criar nova conta
+      createAccountBtn.addEventListener('click', function() {
+        const signupForm = document.getElementById('signup-form');
+        const nameInput = document.getElementById('signup-name');
+        const emailInput = document.getElementById('signup-email');
+        const passwordInput = document.getElementById('signup-password');
+        const confirmPasswordInput = document.getElementById('signup-confirm-password');
+        
+        // Validação básica
+        let isValid = true;
+        
+        if (!nameInput.value) {
+          nameInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          nameInput.classList.remove('is-invalid');
+        }
+        
+        if (!emailInput.checkValidity()) {
+          emailInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          emailInput.classList.remove('is-invalid');
+        }
+        
+        if (passwordInput.value.length < 6) {
+          passwordInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          passwordInput.classList.remove('is-invalid');
+        }
+        
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          confirmPasswordInput.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          confirmPasswordInput.classList.remove('is-invalid');
+        }
+        
+        if (isValid) {
+          // Simulação de cadastro (para demonstração)
+          alert(`Conta criada com sucesso para ${nameInput.value}!`);
+          signupModal.hide();
+        }
+      });
+
+      // Limpar validação ao digitar
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function() {
+          this.classList.remove('is-invalid');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
