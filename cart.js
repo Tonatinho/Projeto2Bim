@@ -33,8 +33,9 @@ function addItemToCart(name, price) {
 
     saveCart(cart);
     console.log(`Produto adicionado: ${name}, Preço: ${priceFloat}`); // Log para debug
-    alert(`"${name}" foi adicionado ao carrinho!`); // Feedback visual rápido
-}
+    
+   // Apenas exibe uma mensagem de confirmação sem perguntar ou redirecionar
+    showAddToCartAnimation(name);}
 
 // Função para atualizar o contador de itens no ícone do carrinho
 function updateCartCount() {
@@ -54,6 +55,7 @@ function initializeCatalog() {
     const addCartButtons = document.querySelectorAll('.add-cart-btn');
     addCartButtons.forEach(button => {
         button.addEventListener('click', (event) => {
+            event.preventDefault();
             const name = event.target.getAttribute('data-name');
             const price = event.target.getAttribute('data-price');
             if (name && price) {
@@ -95,7 +97,7 @@ function loadCartPage() {
     let total = 0;
 
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>Seu carrinho está vazio.</p>';
+        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Seu carrinho está vazio.</p>';
         cartTotalElement.innerText = '0.00';
         return;
     }
@@ -107,9 +109,11 @@ function loadCartPage() {
             <div class="col-md-5">${item.name}</div>
             <div class="col-md-2">R$ ${item.price.toFixed(2)}</div>
             <div class="col-md-3">
-                <button class="btn btn-sm btn-secondary" onclick="decrementItem(${index})">-</button>
-                <span class="mx-2">${item.quantity}</span>
-                <button class="btn btn-sm btn-secondary" onclick="incrementItem(${index})">+</button>
+                <div class="quantity-controls">
+                    <button class="btn btn-sm btn-secondary" onclick="decrementItem(${index})">-</button>
+                    <span class="mx-2">${item.quantity}</span>
+                    <button class="btn btn-sm btn-secondary" onclick="incrementItem(${index})">+</button>
+                </div>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-sm btn-danger" onclick="removeItem(${index})">Remover</button>
@@ -210,3 +214,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+function showAddToCartAnimation(productName) {
+    const toast = document.createElement('div');
+    toast.className = 'cart-toast';
+    toast.innerHTML = `<i class="bi bi-cart-check-fill"></i> "${productName}" adicionado ao carrinho!`;
+    document.body.appendChild(toast);
+
+    // Dispara o efeito e remove depois
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}

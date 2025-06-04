@@ -205,6 +205,7 @@
   <nav class="navbar navbar-expand-lg minha-navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.php">Corumba Clean</a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -216,7 +217,7 @@
             <a class="nav-link active" aria-current="page" href="index.php">Página inicial</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="catalogo.html">Catálogo de Produtos</a>
+            <a class="nav-link" href="#mapa">Saiba Onde Estamos</a>
           </li>
         </ul>
 
@@ -246,7 +247,7 @@
   <!-- Seção do Mapa Estilizada -->
   <section class="mapa-container">
     <div class="mapa-wrapper">
-      <h2 class="mapa-titulo">Localização da nossa loja</h2>
+      <h2 id="mapa" class="mapa-titulo">Localização da nossa loja</h2>
       <div class="mapa-frame-container">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3643.348867576904!2d-52.418592223774155!3d-24.054016179877955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ed75bcea25dfd9%3A0x7e9afaa1769b037!2sR.%20Pav%C3%A3o%2C%20389%20-%20Jardim%20Pio%20XII%2C%20Campo%20Mour%C3%A3o%20-%20PR%2C%2087306-300!5e0!3m2!1spt-BR!2sbr!4v1748111452383!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>

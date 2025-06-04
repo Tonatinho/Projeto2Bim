@@ -33,6 +33,7 @@
     .cart-item {
       border-bottom: 1px solid #eee;
       padding-bottom: 1rem;
+      margin-bottom: 1rem;
     }
 
     .cart-item:last-child {
@@ -59,6 +60,28 @@
         border-color: #1e7e34;
     }
 
+    /* Estilo para botões de incremento/decremento */
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-controls button {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .empty-cart-message {
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      color: #666;
+    }
   </style>
 </head>
 
@@ -101,7 +124,7 @@
   <div class="container cart-container">
     <h2 class="text-center mb-4">Seu Carrinho de Compras</h2>
 
-    <div id="cart-items">
+    <div id="cart-items" class="mb-4">
       <!-- Os itens do carrinho serão inseridos aqui pelo JavaScript -->
       <p>Carregando itens do carrinho...</p>
     </div>
@@ -111,7 +134,8 @@
     </div>
 
     <div class="text-center mt-4">
-        <button id="checkout-button" class="btn btn-lg">Fechar Pedido e Enviar via WhatsApp</button>
+      <a href="catalogo.html" class="btn btn-secondary me-2" target="_blank" >Continuar Comprando</a>
+      <button id="checkout-button" class="btn btn-lg" target="_blank">Fechar Pedido e Enviar via WhatsApp</button>
     </div>
 
   </div>
