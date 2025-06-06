@@ -222,9 +222,9 @@
         </ul>
 
         <div class="d-flex align-items-center gap-3">
-          <a href="login.html" class="btn btn-warning">Entre em contato</a>
+          <a href="login.php" class="btn btn-warning">Entre em contato</a>
 
-          <a href="carrinho.html" class="btn btn-light position-relative">
+          <a href="carrinho.php " class="btn btn-light position-relative">
             <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
             <span id="cart-count"
               class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -238,7 +238,7 @@
 
   <div class="image-container">
     <img src="images/Design sem nome.png" alt="Imagem de destaque" />
-    <a href="catalogo.html" class="botao-sobre-imagem">
+    <a href="catalogo.php" class="botao-sobre-imagem">
       <i class="bi bi-card-list"></i>
       Catálogo de Produtos
     </a>

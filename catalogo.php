@@ -1,30 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+$pageTitle = 'Catálogo de Produtos';
+$currentPage = 'catalogo'; // Used to highlight the active nav link
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo Corumba Clean</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <style>
-    .minha-navbar {
-      background-color: #221c92 !important;
-      box-shadow: 0 4px 10px rgb(255, 255, 255);
-    }
-
-    .navbar-brand,
-    .nav-link {
-      color: white !important;
-    }
-
-    .nav-link:hover {
-      color: black !important;
-    }
-
+// Page specific styles
+$pageStyle = <<<'CSS'
     .catalogo-header {
-      margin-top: 2rem;
+      /* Adjusted margin to account for fixed navbar */
+      margin-top: 2rem; 
     }
 
     .botoes-catalogo {
@@ -98,7 +80,7 @@
       width: 100%;
       height: 280px;
       object-fit: contain;
-      cursor: pointer;
+      cursor: pointer; /* Optional: Indicate images are clickable if they link somewhere */
     }
 
     .card-title {
@@ -109,7 +91,7 @@
     .card-text {
       font-style: italic;
       color: #555;
-      min-height: 1.5rem;
+      min-height: 1.5rem; /* Ensure consistent height */
     }
 
     /* Texto em cima do grid (descrição comum) */
@@ -132,70 +114,61 @@
       background-color: #160f65 !important;
       border-color: #160f65 !important;
     }
-  
-.cart-toast {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #221c92;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.3);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 9999;
-  font-weight: 500;
+CSS;
+
+// Page specific script
+$pageScript = <<<'JS'
+<script>
+// Função para mostrar/esconder produtos por categoria
+function toggleProduto(id, botaoClicado) {
+  // Esconde todas as seções de produto
+  document.querySelectorAll('.produto-info').forEach(div => {
+    div.classList.remove('show');
+    div.setAttribute('aria-hidden', 'true');
+  });
+
+  // Remove a classe 'ativo' de todos os botões de produto
+  document.querySelectorAll('.btn-produto').forEach(btn => {
+    btn.classList.remove('ativo');
+  });
+
+  // Mostra a seção de produto clicada
+  const produtoDiv = document.getElementById(id);
+  if (produtoDiv) {
+    produtoDiv.classList.add('show');
+    produtoDiv.setAttribute('aria-hidden', 'false');
+  }
+
+  // Adiciona a classe 'ativo' ao botão clicado
+  if (botaoClicado) {
+      botaoClicado.classList.add('ativo');
+  }
 }
-.cart-toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.cart-toast i {
-  margin-right: 8px;
-}
-</style>
-</head>
 
-<body>
-  <nav class="navbar navbar-expand-lg minha-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">Corumba Clean</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+// Initialize cart functionality (from cart.js, called after DOM is ready)
+document.addEventListener('DOMContentLoaded', () => {
+    // You might want to automatically show the first category or none
+    // Example: Show the first category by default
+    // const firstButton = document.querySelector('.btn-produto');
+    // if (firstButton) {
+    //     const firstProductId = firstButton.id.replace('btn-', '');
+    //     toggleProduto(firstProductId, firstButton);
+    // }
+});
+</script>
+JS;
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.php">Página inicial</a>
-          </li>
-          
-        </ul>
+include 'includes/header.php';
+include 'includes/navbar.php';
+?>
 
-        <div class="d-flex align-items-center gap-3">
-          <a href="login.html" class="btn btn-warning">Faça o seu login</a>
-
-          <a href="carrinho.html" class="btn btn-light position-relative">
-            <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
-            <span id="cart-count"
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              0
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <section id="catalogo" class="catalogo">
+<!-- Main Content Area -->
+<section id="catalogo" class="container mt-4">
     <div class="catalogo-header text-center">
       <h2>Catálogo Completo</h2>
     </div>
 
-    <div class="container text-center">
+    <div class="text-center">
       <div class="botoes-catalogo">
         <button id="btn-limpador" class="btn-produto btn" onclick="toggleProduto('limpador', this)">Limpador Perfumado</button>
         <button id="btn-detergente" class="btn-produto btn" onclick="toggleProduto('detergente', this)">Detergente Lava Louças</button>
@@ -216,13 +189,14 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Algas
+              Limpador Perfumado 5L
             </div>
+            <!-- Assuming images folder is accessible from where PHP files are run -->
             <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 10.51.06.jpeg" alt="Algas" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpador Algas</h5>
-              <p class="card-text">Cheiro de Algas frescas</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Algas" data-price="25.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro de Algas frescas</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Algas" data-price="20.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -230,13 +204,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Talco
+              Limpador Perfumado 5L
             </div>
             <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 11.04.08.jpeg" alt="Talco" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpador Talco</h5>
-              <p class="card-text">Cheiro suave de Talco</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Talco" data-price="25.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro suave de Talco</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Talco" data-price="20.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -244,13 +218,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Campestre
+              Limpador Perfumado 5L
             </div>
             <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.40.46.jpeg" alt="Campestre" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpador Campestre</h5>
-              <p class="card-text">Cheiro campestre natural</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Campestre" data-price="25.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro campestre natural</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Campestre" data-price="20.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -258,13 +232,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Floral
+              Limpador Perfumado 5L
             </div>
             <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.41.53.jpeg" alt="Floral" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpador Floral</h5>
-              <p class="card-text">Cheiro floral delicado</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Floral" data-price="25.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro floral delicado</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Floral" data-price="20.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -272,13 +246,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Lavanda
+              Limpador Perfumado 5L
             </div>
             <img src="images/Limpador perfumado 5L/WhatsApp Image 2025-03-04 at 12.42.22.jpeg" alt="Lavanda" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpador Lavanda</h5>
-              <p class="card-text">Cheiro calmante de Lavanda</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Lavanda" data-price="25.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro calmante de Lavanda</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpador Lavanda" data-price="20.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -295,9 +269,9 @@
             </div>
             <img src="images/Detergente Lava louças 5L/WhatsApp Image 2025-03-04 at 10.42.29.jpeg" alt="Detergente 5L 1" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Detergente 5L</h5>
-              <p class="card-text">Lava Louças 5 Litros</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 5L 1" data-price="30.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Lava Louças Pêssego</h5>
+              <p class="card-text">R$27,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 5L 1" data-price="27.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -309,9 +283,9 @@
             </div>
             <img src="images/Detergente Lava louças 5L/WhatsApp Image 2025-03-04 at 11.54.49.jpeg" alt="Detergente 5L 2" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Detergente 5L</h5>
-              <p class="card-text">Lava Louças 5 Litros</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 5L 2" data-price="30.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Lava Louças Neutro</h5>
+              <p class="card-text">R$27,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 5L 2" data-price="27.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -323,9 +297,9 @@
             </div>
             <img src="images/Detergente Lava louças 2L/WhatsApp Image 2025-03-04 at 11.50.43.jpeg" alt="Detergente 2L 1" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Detergente 2L</h5>
-              <p class="card-text">Lava Louças 2 Litros</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 2L 1" data-price="15.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Lava Louças Neutro</h5>
+              <p class="card-text">R$14,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 2L 1" data-price="14.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -337,9 +311,9 @@
             </div>
             <img src="images/Detergente Lava louças 2L/WhatsApp Image 2025-03-04 at 11.53.45.jpeg" alt="Detergente 2L 2" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Detergente 2L</h5>
-              <p class="card-text">Lava Louças 2 Litros</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 2L 2" data-price="15.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Lava Louças Pêssego</h5>
+              <p class="card-text">R$14,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente 2L 2" data-price="14.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -356,9 +330,9 @@
             </div>
             <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.37.34.jpeg" alt="Álcool 1" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Álcool Perfumado</h5>
-              <p class="card-text">Fragrância suave</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 1" data-price="35.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Fragrância suave</h5>
+              <p class="card-text">R$30,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 1" data-price="30.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -370,9 +344,9 @@
             </div>
             <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.38.22.jpeg" alt="Álcool 2" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Álcool Perfumado</h5>
-              <p class="card-text">Fragrância suave</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 2" data-price="35.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Fragrância suave</h5>
+              <p class="card-text">R$30,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 2" data-price="30.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -384,9 +358,9 @@
             </div>
             <img src="images/Alcool Perfumado 5L/WhatsApp Image 2025-03-04 at 10.44.55.jpeg" alt="Álcool 3" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Álcool Perfumado</h5>
-              <p class="card-text">Fragrância suave</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 3" data-price="35.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Fragrância suave</h5>
+              <p class="card-text">R$30,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Álcool Perfumado 3" data-price="30.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -403,9 +377,9 @@
             </div>
             <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.40.02.jpeg" alt="Aromatizador 1" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Aromatizador 250ml</h5>
-              <p class="card-text">Fragrância para ambientes</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 1" data-price="20.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro puro de Maresia</h5>
+              <p class="card-text">R$14,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 1" data-price="14.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -417,9 +391,9 @@
             </div>
             <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.40.27.jpeg" alt="Aromatizador 2" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Aromatizador 250ml</h5>
-              <p class="card-text">Fragrância para ambientes</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 2" data-price="20.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro leve de Bambu</h5>
+              <p class="card-text">R$14,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 2" data-price="14.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -431,9 +405,9 @@
             </div>
             <img src="images/Aromatizante 250ml/WhatsApp Image 2025-03-04 at 11.42.37.jpeg" alt="Aromatizador 3" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Aromatizador 250ml</h5>
-              <p class="card-text">Fragrância para ambientes</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 3" data-price="20.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro vibrante de Citruz</h5>
+              <p class="card-text">R$14,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Aromatizador 3" data-price="14.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -446,13 +420,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Limpa Piso Querosene
+              Limpa Piso Querosene 5L
             </div>
             <img src="images/Limpa piso querosene  5L/WhatsApp Image 2025-03-04 at 12.11.48.jpeg" alt="Limpa Piso Querosene" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Limpa Piso Querosene</h5>
-              <p class="card-text">Limpeza pesada de pisos</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpa Piso Querosene" data-price="40.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Limpeza profunda com querosene</h5>
+              <p class="card-text">R$35,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Limpa Piso Querosene" data-price="35.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -465,13 +439,13 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Sabonete Perfumado
+              Sabonete Perfumado 500ml
             </div>
             <img src="images/Detergente perfumado 500m/WhatsApp Image 2025-03-04 at 12.47.57.jpeg" alt="Detergente Perfumado" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Sabonete Perfumado</h5>
-              <p class="card-text">Limpeza com fragrância</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente Perfumado" data-price="12.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Fragrâncias leves: Chá Verde, Floral, Algodão, Baby e Erva Doce</h5>
+              <p class="card-text">R$11,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Detergente Perfumado" data-price="11.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -488,9 +462,9 @@
             </div>
             <img src="images/Desengordurante Multiuso 1L/WhatsApp Image 2025-03-04 at 11.45.32.jpeg" alt="Desengordurante Multiuso" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Desengordurante Multiuso</h5>
-              <p class="card-text">Remove gordura e sujeiras difíceis</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Desengordurante Multiuso" data-price="18.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Força multiuso contra a gordura</h5>
+              <p class="card-text">R$15,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Desengordurante Multiuso" data-price="15.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -507,9 +481,9 @@
             </div>
             <img src="images/Amaciante de Roupas 5L/WhatsApp Image 2025-03-04 at 11.00.03.jpeg" alt="Amaciante 1" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Amaciante de Roupas</h5>
-              <p class="card-text">Deixa as roupas macias e perfumadas</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Amaciante de Roupas 1" data-price="28.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Maciez envolvente de Confortemp</h5>
+              <p class="card-text">R$27,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Amaciante de Roupas 1" data-price="27.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -521,9 +495,9 @@
             </div>
             <img src="images/Amaciante de Roupas 5L/WhatsApp Image 2025-03-04 at 11.05.44.jpeg" alt="Amaciante 2" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Amaciante de Roupas</h5>
-              <p class="card-text">Deixa as roupas macias e perfumadas</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Amaciante de Roupas 2" data-price="28.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Cheiro suave e fresco de Blue</h5>
+              <p class="card-text">R$27,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Amaciante de Roupas 2" data-price="27.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -540,9 +514,9 @@
             </div>
             <img src="images/Alvejante sem cloro 5L/WhatsApp Image 2025-03-04 at 11.24.36.jpeg" alt="Alvejante sem cloro" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Alvejante sem cloro</h5>
-              <p class="card-text">Clareia tecidos sem danificar cores</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Alvejante sem cloro" data-price="32.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Limpa e cuida com segurança todos os dias</h5>
+              <p class="card-text">R$28,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Alvejante sem cloro" data-price="28.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
@@ -555,50 +529,35 @@
         <div class="produto-item">
           <div class="card">
             <div class="card-header">
-              Água Sanitária
+              Água Sanitária 5L
             </div>
-            <img src="images/Agua sanitaria 5L/WhatsApp Image 2025-03-04 at 11.22.21.jpeg" alt="Água Sanitária" class="card-img-top" />
+            <img src="images/Água sanitária 5L e 2L/WhatsApp Image 2025-03-04 at 11.20.01.jpeg" alt="Água Sanitária 5L" class="card-img-top" />
             <div class="card-body">
-              <h5 class="card-title">Água Sanitária</h5>
-              <p class="card-text">Desinfecção eficaz para diversas superfícies</p>
-              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Água Sanitária" data-price="20.00">Adicionar ao carrinho</button>
+              <h5 class="card-title">Força pura na limpeza</h5>
+              <p class="card-text">R$20,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Água Sanitária 5L" data-price="20.00">Adicionar ao carrinho</button>
+            </div>
+          </div>
+        </div>
+        <div class="produto-item">
+          <div class="card">
+            <div class="card-header">
+              Água Sanitária 2L
+            </div>
+            <img src="images/Água sanitária 5L e 2L/WhatsApp Image 2025-03-04 at 11.15.02.jpeg" alt="Água Sanitária 2L" class="card-img-top" />
+            <div class="card-body">
+              <h5 class="card-title">Força pura na limpeza</h5>
+              <p class="card-text">R$9,00</p>
+              <button class="btn btn-sm btn-primary add-cart-btn" data-name="Água Sanitária 2L" data-price="9.00">Adicionar ao carrinho</button>
             </div>
           </div>
         </div>
       </div>
+
     </div>
-  </section>
+</section>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Função para mostrar/esconder produtos por categoria
-    function toggleProduto(id, botaoClicado) {
-      // Esconde todas as seções de produto
-      document.querySelectorAll('.produto-info').forEach(div => {
-        div.classList.remove('show');
-        div.setAttribute('aria-hidden', 'true');
-      });
+<?php
+include 'includes/footer.php';
+?>
 
-      // Remove a classe 'ativo' de todos os botões de produto
-      document.querySelectorAll('.btn-produto').forEach(btn => {
-        btn.classList.remove('ativo');
-      });
-
-      // Mostra a seção de produto clicada
-      const produtoDiv = document.getElementById(id);
-      if (produtoDiv) {
-        produtoDiv.classList.add('show');
-        produtoDiv.setAttribute('aria-hidden', 'false');
-      }
-
-      // Adiciona a classe 'ativo' ao botão clicado
-      if (botaoClicado) {
-          botaoClicado.classList.add('ativo');
-      }
-    }
-  </script>
-  <!-- Incluindo o script do carrinho -->
-  <script src="cart.js"></script>
-</body>
-
-</html>
