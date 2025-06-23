@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const nomeInput = document.getElementById('nome');
   const telefoneInput = document.getElementById('telefone');
   const emailInput = document.getElementById('email');
+  const assuntoInput = document.getElementById('assunto');
+  const empresaInput = document.getElementById('empresa');
   const mensagemInput = document.getElementById('mensagem');
   const errorAlert = document.getElementById('error-alert');
   const successAlert = document.getElementById('success-alert');
@@ -108,8 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reset validation states
     nomeInput.classList.remove('is-invalid');
     telefoneInput.classList.remove('is-invalid');
-    emailInput.classList.remove('is-invalid');
-    mensagemInput.classList.remove('is-invalid');
+    emailInput.classList.remove("is-invalid");
+    assuntoInput.classList.remove("is-invalid");
+    empresaInput.classList.remove("is-invalid");
+    mensagemInput.classList.remove("is-invalid");
     errorAlert.style.display = 'none';
     successAlert.style.display = 'none';
 
@@ -127,13 +131,20 @@ document.addEventListener('DOMContentLoaded', function() {
       isValid = false;
     } 
     
-    if (!emailInput.checkValidity() || !emailInput.value.trim()) {
-      emailInput.classList.add('is-invalid');
+     if (!emailInput.checkValidity() || !emailInput.value.trim()) {
+      emailInput.classList.add("is-invalid");
       isValid = false;
-    } 
-    
+    }
+
+    if (!assuntoInput.value.trim()) {
+      assuntoInput.classList.add("is-invalid");
+      isValid = false;
+    }
+
+    // Empresa é opcional, então não precisa de validação 'required'
+
     if (!mensagemInput.value.trim()) {
-      mensagemInput.classList.add('is-invalid');
+      mensagemInput.classList.add("is-invalid");
       isValid = false;
     } 
     
@@ -146,10 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const nome = encodeURIComponent(nomeInput.value.trim());
       const telefone = encodeURIComponent(telefoneInput.value.trim());
       const email = encodeURIComponent(emailInput.value.trim());
+      const assunto = encodeURIComponent(assuntoInput.value.trim());
+      const empresa = encodeURIComponent(empresaInput.value.trim());
       const mensagem = encodeURIComponent(mensagemInput.value.trim());
       
       // Montar a mensagem para o WhatsApp
-      const textoWhatsapp = `Nome: ${nome}%0ATelefone: ${telefone}%0AEmail: ${email}%0AMensagem: ${mensagem}`;
+      const textoWhatsapp = `Nome: ${nome}%0ATelefone: ${telefone}%0AEmail: ${email}%0AAssunto: ${assunto}%0AEmpresa: ${empresa}%0AMensagem: ${mensagem}`;
       
       // Redirecionar para o WhatsApp após 1 segundo
       setTimeout(() => {
@@ -209,6 +222,29 @@ include 'includes/navbar.php';
           <label for="nome">Nome completo</label>
           <div class="invalid-feedback">
             Por favor, informe seu nome completo.
+          </div>
+        </div>
+
+        <div class="form-floating">
+          <select class="form-select" id="assunto" aria-label="Assunto da mensagem" required>
+            <option value="">Selecione um assunto</option>
+            <option value="Atacado">Atacado</option>
+            <option value="Dúvida">Dúvida</option>
+            <option value="Sugestão">Sugestão</option>
+            <option value="Reclamação">Reclamação</option>
+            <option value="Outros">Outros</option>
+          </select>
+          <label for="assunto">Assunto</label>
+          <div class="invalid-feedback">
+            Por favor, selecione o assunto da mensagem.
+          </div>
+        </div>
+
+        <div class="form-floating">
+          <input type="text" class="form-control" id="empresa" placeholder="Nome da sua empresa">
+          <label for="empresa">Empresa (Em caso de atacado  )</label>
+          <div class="invalid-feedback">
+            Por favor, informe o nome da sua empresa.
           </div>
         </div>
 

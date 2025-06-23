@@ -13,23 +13,29 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Corumba Clean';
   <style>
     /* Common styles */
     body { 
-        padding-top: 70px; /* Adjusted for navbar height */
+        /* padding-top: 70px; REMOVED to match index.php navbar behavior */
         padding-bottom: 20px; /* Add some bottom padding */
     }
     .minha-navbar {
       background-color: #221c92 !important;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
-      position: fixed; /* Make navbar fixed */
+      box-shadow: 0 4px 10px rgb(255, 255, 255); /* Matched with index.php */
+      /* REMOVED fixed positioning to match index.php navbar behavior
+      position: fixed; 
       top: 0;
       width: 100%;
       z-index: 1030;
+      */
     }
     .navbar-brand,
     .nav-link {
       color: white !important;
     }
     .nav-link:hover {
-      color: #ddd !important; /* Lighter hover color */
+      color: rgb(0, 0, 0) !important; /* Matched with index.php */
+    }
+    .active {
+      color: rgb(255, 255, 255) !important; /* Added from index.php */
+      font-weight: bold; /* Added from index.php */
     }
     .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
@@ -61,3 +67,5 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Corumba Clean';
   </style>
 </head>
 <body>
+
+

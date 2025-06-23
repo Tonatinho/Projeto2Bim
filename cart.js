@@ -1,39 +1,28 @@
 // cart.js
 
-// Função para obter o carrinho do localStorage
 function getCart() {
     return JSON.parse(localStorage.getItem("shoppingCart")) || [];
 }
 
-// Função para salvar o carrinho no localStorage
 function saveCart(cart) {
     localStorage.setItem("shoppingCart", JSON.stringify(cart));
-    updateCartCount(); // Atualiza o contador sempre que o carrinho é salvo
-    // Also update cart page if currently visible
-    if (document.getElementById("cart-items")) {
-        loadCartPage();
-    }
+    updateCartCount(); 
 }
 
-// Função para adicionar item ao carrinho
 function addItemToCart(name, price) {
     let cart = getCart();
     const priceFloat = parseFloat(price); // Garante que o preço seja número
     if (isNaN(priceFloat)) {
         console.error("Preço inválido para o produto:", name);
         alert("Erro: Preço inválido para " + name);
-        return; // Não adiciona se o preço for inválido
+        return; 
     }
 
-    // Verifica se o item já existe no carrinho
     const existingItemIndex = cart.findIndex(item => item.name === name);
 
     if (existingItemIndex > -1) {
-        // Se existe, incrementa a quantidade
         cart[existingItemIndex].quantity += 1;
     } else {
-        // Se não existe, adiciona novo item
-        // Find image source from the button's card (assuming standard structure)
         let imageSrc = "images/placeholder.png"; // Default image
         const buttonElement = document.querySelector(`.add-cart-btn[data-name="${name}"]`);
         if (buttonElement) {
@@ -51,9 +40,11 @@ function addItemToCart(name, price) {
     saveCart(cart);
     console.log(`Produto adicionado: ${name}, Preço: ${priceFloat}`); // Log para debug
     showAddToCartAnimation(name);
+    if (document.getElementById("cart-items")) {
+        loadCartPage(); 
+    }
 }
 
-// Função para atualizar o contador de itens no ícone do carrinho
 function updateCartCount() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -91,18 +82,15 @@ function initializeCatalog() {
 
 // --- Funções para a página carrinho.php ---
 
-// Função para carregar e exibir itens na página do carrinho
+// Função para carregar e exibir itens na página do carrinho (full re-render)
 function loadCartPage() {
     const cart = getCart();
     const cartItemsContainer = document.getElementById("cart-items");
     const cartTotalElement = document.getElementById("cart-total");
     const checkoutButton = document.getElementById("checkout-button");
-    const emptyCartMessage = document.querySelector(".empty-cart-message"); // Get the empty message element
+    const emptyCartMessage = document.querySelector(".empty-cart-message");
 
     if (!cartItemsContainer || !cartTotalElement || !checkoutButton || !emptyCartMessage) {
-        // Don't log error here, as this function might be called from saveCart
-        // even when not on the cart page.
-        // console.error("Elementos essenciais do carrinho não encontrados.");
         return;
     }
 
@@ -118,7 +106,7 @@ function loadCartPage() {
         cart.forEach((item, index) => {
             const itemSubtotal = item.price * item.quantity;
             const itemElement = document.createElement("div");
-            itemElement.classList.add("cart-item"); // Removed row/col for simpler flex structure
+            itemElement.classList.add("cart-item");
             itemElement.setAttribute("data-index", index); // Add index for easier updates
             itemElement.innerHTML = `
                 <img src="${item.image || 'images/placeholder.png'}" alt="${item.name}" class="cart-item-image">
@@ -148,8 +136,25 @@ function incrementItem(index) {
     let cart = getCart();
     if (cart[index]) {
         cart[index].quantity += 1;
-        saveCart(cart);
-        // No need to call loadCartPage here, saveCart does it if on cart page
+        saveCart(cart); // Save updated cart to localStorage
+
+        // Directly update the DOM for the specific item
+        const itemElement = document.querySelector(`.cart-item[data-index="${index}"]`);
+        if (itemElement) {
+            const quantitySpan = itemElement.querySelector(".item-quantity");
+            const subtotalSpan = itemElement.querySelector(".item-subtotal");
+            const itemPrice = cart[index].price;
+            const newQuantity = cart[index].quantity;
+            const newSubtotal = itemPrice * newQuantity;
+
+            if (quantitySpan) {
+                quantitySpan.innerText = newQuantity;
+            }
+            if (subtotalSpan) {
+                subtotalSpan.innerText = newSubtotal.toFixed(2);
+            }
+        }
+        updateCartTotalsDisplay(); // Update overall cart total and checkout button
     }
 }
 
@@ -158,14 +163,31 @@ function decrementItem(index) {
     let cart = getCart();
     if (cart[index] && cart[index].quantity > 1) {
         cart[index].quantity -= 1;
-        saveCart(cart);
+        saveCart(cart); // Save updated cart to localStorage
+
+        // Directly update the DOM for the specific item
+        const itemElement = document.querySelector(`.cart-item[data-index="${index}"]`);
+        if (itemElement) {
+            const quantitySpan = itemElement.querySelector(".item-quantity");
+            const subtotalSpan = itemElement.querySelector(".item-subtotal");
+            const itemPrice = cart[index].price;
+            const newQuantity = cart[index].quantity;
+            const newSubtotal = itemPrice * newQuantity;
+
+            if (quantitySpan) {
+                quantitySpan.innerText = newQuantity;
+            }
+            if (subtotalSpan) {
+                subtotalSpan.innerText = newSubtotal.toFixed(2);
+            }
+        }
+        updateCartTotalsDisplay(); // Update overall cart total and checkout button
     } else if (cart[index] && cart[index].quantity === 1) {
         // Se a quantidade for 1, remove o item
-        removeItem(index); // Call remove function which handles saveCart and reload
+        removeItem(index); // removeItem will now call loadCartPage
     } else {
         return; // Não faz nada se o item não existir
     }
-    // No need to call loadCartPage here, saveCart/removeItem does it
 }
 
 // Função para remover um item completamente
@@ -174,11 +196,41 @@ function removeItem(index) {
     if (cart[index]) {
         const removedItemName = cart[index].name;
         cart.splice(index, 1);
-        saveCart(cart);
+        saveCart(cart); // Save updated cart to localStorage
         console.log(`Item removido: ${removedItemName}`);
-        // No need to call loadCartPage here, saveCart does it
+        loadCartPage(); // Re-render the entire cart after removal
     }
 }
+
+// Função para atualizar o total do carrinho e o estado do botão de checkout
+function updateCartTotalsDisplay() {
+    const cart = getCart();
+    const cartTotalElement = document.getElementById("cart-total");
+    const checkoutButton = document.getElementById("checkout-button");
+    const emptyCartMessage = document.querySelector(".empty-cart-message");
+
+    if (!cartTotalElement || !checkoutButton || !emptyCartMessage) {
+        return;
+    }
+
+    let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    cartTotalElement.innerText = total.toFixed(2);
+
+    if (cart.length === 0) {
+        emptyCartMessage.style.display = "block";
+        checkoutButton.disabled = true;
+        // Also clear cart items container if it's not already empty
+        const cartItemsContainer = document.getElementById("cart-items");
+        if (cartItemsContainer) {
+            cartItemsContainer.innerHTML = "";
+        }
+    } else {
+        emptyCartMessage.style.display = "none";
+        checkoutButton.disabled = false;
+    }
+    console.log("Totais do carrinho atualizados. Novo total:", total.toFixed(2));
+}
+
 
 // Função para finalizar o pedido (envia para processa_pedido.php)
 function checkout() {
@@ -190,7 +242,7 @@ function checkout() {
 
     const checkoutButton = document.getElementById("checkout-button");
     checkoutButton.disabled = true; // Disable button during processing
-    checkoutButton.innerHTML = 
+    checkoutButton.innerHTML =
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processando...';
 
     // Prepara os dados para enviar ao PHP
@@ -222,7 +274,7 @@ function checkout() {
             loadCartPage(); // Recarrega a visualização do carrinho (mostrar vazio)
             // Redireciona para o WhatsApp
             alert("Pedido pronto para ser enviado via WhatsApp!");
-            window.open(data.whatsappUrl, 
+            window.open(data.whatsappUrl,
             "_blank"); // Open in new tab
             // Reset button after a short delay
             setTimeout(() => {
@@ -258,9 +310,11 @@ function initializeCartPage() {
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener("click", (event) => {
             const target = event.target;
-            const index = target.getAttribute("data-index") || target.closest("[data-index]")?.getAttribute("data-index");
+            // Find the closest element with data-index, whether it's the target itself or a parent
+            const itemElementWithIndex = target.closest(".cart-item[data-index]");
+            if (!itemElementWithIndex) return; // Click was not on a relevant element
 
-            if (index === null) return; // Click was not on a relevant element
+            const index = itemElementWithIndex.getAttribute("data-index");
             const itemIndex = parseInt(index, 10);
 
             if (target.classList.contains("increase-quantity")) {
@@ -298,7 +352,7 @@ function showAddToCartAnimation(productName) {
 }
 
 
-// --- Inicialização Geral --- 
+// --- Inicialização Geral ---
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM carregado. Inicializando scripts...");
     updateCartCount(); // Atualiza o contador em todas as páginas
@@ -311,4 +365,5 @@ document.addEventListener("DOMContentLoaded", () => {
         initializeCartPage();
     }
 });
+
 

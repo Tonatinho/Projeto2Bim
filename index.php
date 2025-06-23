@@ -43,7 +43,7 @@
     .image-container {
       position: relative;
       width: 100%;
-      height: 100vh; /* TELA CHEIA */
+      height: 100vh;
       overflow: hidden;
     }
 
@@ -51,12 +51,12 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Preenche a tela sem distorcer */
+      object-fit: cover;
     }
 
     .botao-sobre-imagem {
       position: absolute;
-      bottom: 10%; /* Mais próximo do rodapé */
+      bottom: 10%;
       left: 50%;
       transform: translateX(-50%);
       background-color: rgb(255, 0, 0);
@@ -183,18 +183,51 @@
       margin-bottom: 0.25rem;
     }
 
+    /* RESPONSIVIDADE ADICIONADA */
     @media (max-width: 768px) {
       .mapa-titulo {
         font-size: 2rem;
       }
-      
+
       .mapa-frame-container iframe {
         height: 350px;
       }
-      
+
       .mapa-info {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .botao-sobre-imagem {
+        font-size: 1rem;
+        padding: 10px 20px;
+        bottom: 5%;
+        flex-direction: row;
+        white-space: nowrap;
+      }
+
+      .image-container {
+        height: 70vh;
+      }
+
+      .image-container img {
+        object-position: center top;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .botao-sobre-imagem {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        bottom: 3%;
+      }
+
+      .mapa-info-text {
+        font-size: 0.9rem;
+      }
+
+      .mapa-info-text strong {
+        font-size: 1rem;
       }
     }
   </style>
@@ -217,14 +250,17 @@
             <a class="nav-link active" aria-current="page" href="index.php">Página inicial</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#mapa">Saiba Onde Estamos</a>
+            <a class="nav-link active" aria-current="page" href="#mapa">Onde nos encontrar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="catalogo.php">Catálogo de produtos</a>
           </li>
         </ul>
 
         <div class="d-flex align-items-center gap-3">
           <a href="login.php" class="btn btn-warning">Entre em contato</a>
 
-          <a href="carrinho.php " class="btn btn-light position-relative">
+          <a href="carrinho.php" class="btn btn-light position-relative">
             <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
             <span id="cart-count"
               class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -270,7 +306,7 @@
           <i class="bi bi-telephone-fill mapa-info-icon"></i>
           <div class="mapa-info-text">
             <strong>Contato</strong>
-            (44) 9999-9999
+            (44) 9990-0933
           </div>
         </div>
       </div>
